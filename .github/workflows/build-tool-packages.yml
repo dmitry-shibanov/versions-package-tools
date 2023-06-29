@@ -146,7 +146,7 @@ jobs:
   publish_release:
     name: Publish release
     if: inputs.publish-release
-    # needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/download-artifact@v3
