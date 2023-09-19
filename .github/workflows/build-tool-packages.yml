@@ -77,7 +77,7 @@ jobs:
         - os: windows-latest
           platform: win32
           architecture: x64
-        - os: macos-latest
+        - os: macos-latest-arm64
           platform: darwin
           architecture: arm64
     steps:
