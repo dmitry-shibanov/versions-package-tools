@@ -27,7 +27,7 @@ defaults:
 
 jobs:
   build:
-    name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}]
+    name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     runs-on: ubuntu-latest
     env: 
       ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
@@ -59,7 +59,7 @@ jobs:
         path: ${{ runner.temp }}/artifact
 
   test:
-    name: Test ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}]
+    name: Test ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     needs: build
     runs-on: ${{ matrix.os }}
     env: 
