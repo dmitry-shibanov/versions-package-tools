@@ -30,11 +30,17 @@ jobs:
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}]
     runs-on: ubuntu-latest
     env: 
-      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-x64
+      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
     strategy:
       fail-fast: false
       matrix:
         platform: [linux, darwin, win32]
+        architecture: [x64, arm64]
+        exclude:
+          - platform: win32
+            architecture: arm64
+          - platform: linux
+            architecture: arm64
     steps:
     - uses: actions/checkout@v3
       with:
@@ -44,6 +50,7 @@ jobs:
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
                                                      -Platform ${{ matrix.platform }}
+                                                     -Architecture ${{ matrix.architecture }}
 
     - name: Publish artifact
       uses: actions/upload-artifact@v3
@@ -56,17 +63,23 @@ jobs:
     needs: build
     runs-on: ${{ matrix.os }}
     env: 
-      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-x64
+      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
     strategy:
       fail-fast: false
       matrix:
         include:
         - os: ubuntu-latest
           platform: linux
+          architecture: x64
         - os: macos-latest
           platform: darwin
+          architecture: x64
         - os: windows-latest
           platform: win32
+          architecture: x64
+        - os: macos-latest
+          platform: darwin
+          architecture: arm64
     steps:
     - uses: actions/checkout@v3
       with:
