@@ -49,7 +49,7 @@ jobs:
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
-                                                     -Platform ${{ matrix.platform }}
+                                                     -Platform ${{ matrix.platform }} `
                                                      -Architecture ${{ matrix.architecture }}
 
     - name: Publish artifact
