@@ -40,7 +40,7 @@ jobs:
         - architecture: arm64
           platform: darwin
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
@@ -61,19 +61,25 @@ jobs:
     needs: build
     runs-on: ${{ matrix.os }}
     env: 
-      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-x64
+      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
     strategy:
       fail-fast: false
       matrix:
         include:
         - os: ubuntu-latest
           platform: linux
+          architecture: x64
         - os: macos-latest
           platform: darwin
+          architecture: x64
         - os: windows-latest
           platform: win32
+          architecture: x64
+        - os: macos-13-xlarge
+          platform: darwin
+          architecture: arm64
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
@@ -111,7 +117,7 @@ jobs:
 
     - name: Setup Node.js ${{ inputs.tool-version }}
       if: inputs.tool-name == 'node'
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.tool-version }}
 
